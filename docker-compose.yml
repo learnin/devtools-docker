@@ -19,7 +19,7 @@ services:
     depends_on:
       - mattermost-db
     environment:
-      - DB_HOST=db
+      - DB_HOST=mattermost-db
       - DB_PORT_5432_TCP_PORT=3306
       - MM_DBNAME=mattermost
       - MM_USERNAME=mattermost
@@ -32,13 +32,13 @@ services:
       - mattermost-app-config:/mattermost/config
       - mattermost-app-data:/mattermost/data
   mattermost-web:
-    depends_on:
-      - mattermost-app
     environment:
       - MATTERMOST_ENABLE_SSL=false
       - PLATFORM_PORT_80_TCP_PORT=80
       - TZ=Asia/Tokyo
     image: learnin/mattermost-web
+    links:
+      - mattermost-app:app
     ports:
       - "50002:80"
     restart: unless-stopped
@@ -63,7 +63,7 @@ services:
     depends_on:
       - gitbucket-db
     environment:
-      - GITBUCKET_DB_HOST=db
+      - GITBUCKET_DB_HOST=gitbucket-db
       - GITBUCKET_DB_NAME=gitbucket
       - GITBUCKET_DB_USER=gitbucket
       - GITBUCKET_DB_PASSWORD=gitbucket
@@ -79,6 +79,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - gitbucket-app-data:/gitbucket
   hubot-mattermost:
+    depends_on:
+      - mattermost-web
     environment:
       - MATTERMOST_HOST=${MATTERMOST_HOST}
       - MATTERMOST_GROUP=${MATTERMOST_GROUP}
@@ -127,7 +129,7 @@ services:
     depends_on:
       - redmine-db
     environment:
-      - REDMINE_DB_MYSQL=db
+      - REDMINE_DB_MYSQL=redmine-db
       - MYSQL_ENV_MYSQL_USER=redmine
       - MYSQL_ENV_MYSQL_PASSWORD=redmine
       - MYSQL_ENV_MYSQL_DATABASE=redmine
