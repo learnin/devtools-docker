@@ -34,7 +34,6 @@ docker container run \
   -v devtoolsdocker_mattermost-app-data:/target/mattermost-app-data \
   -v devtoolsdocker_gitbucket-db-data:/target/gitbucket-db-data \
   -v devtoolsdocker_gitbucket-app-data:/target/gitbucket-app-data \
-  -v devtoolsdocker_hubot-mattermost-data:/target/hubot-mattermost-data \
   -v devtoolsdocker_jenkins-data:/target/jenkins-data \
   -v devtoolsdocker_redmine-db-data:/target/redmine-db-data \
   -v devtoolsdocker_redmine-app-data:/target/redmine-app-data \
@@ -59,7 +58,6 @@ docker container run \
   -v devtoolsdocker_mattermost-app-data:/target/mattermost-app-data \
   -v devtoolsdocker_gitbucket-db-data:/target/gitbucket-db-data \
   -v devtoolsdocker_gitbucket-app-data:/target/gitbucket-app-data \
-  -v devtoolsdocker_hubot-mattermost-data:/target/hubot-mattermost-data \
   -v devtoolsdocker_jenkins-data:/target/jenkins-data \
   -v devtoolsdocker_redmine-db-data:/target/redmine-db-data \
   -v devtoolsdocker_redmine-app-data:/target/redmine-app-data \
