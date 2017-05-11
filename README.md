@@ -39,14 +39,14 @@ docker container run \
   -v devtoolsdocker_redmine-db-data:/target/redmine-db-data \
   -v devtoolsdocker_redmine-app-data:/target/redmine-app-data \
   -v $(pwd):/backup \
-  ubuntu tar cvzfp /backup/backup.tar.gz /target
+  ubuntu tar cvzfp /backup/devtools_backup.tar.gz /target
 docker-compose start
 ```
 
 If you use docker-machine, execute the above `docker container run` command in docker-machine, and copy backup.tar.gz from docker-machine to host machine with the following command.
 
 ```shell
-docker-machine scp default:~/backup.tar.gz .
+docker-machine scp default:~/devtools_backup.tar.gz .
 ```
 
 ## How to restore
@@ -64,12 +64,12 @@ docker container run \
   -v devtoolsdocker_redmine-db-data:/target/redmine-db-data \
   -v devtoolsdocker_redmine-app-data:/target/redmine-app-data \
   -v $(pwd):/backup \
-  ubuntu bash -c "cd /target && tar xvzfp /backup/backup.tar.gz --strip 1"
+  ubuntu bash -c "cd /target && tar xvzfp /backup/devtools_backup.tar.gz --strip 1"
 docker-compose start
 ```
 
 If you use docker-machine, execute the following command to copy backup.tar.gz from host machine to docker-machine, and execute the above `docker container run` command in docker-machine.
 
 ```shell
-docker-machine scp backup.tar.gz default:~/
+docker-machine scp devtools_backup.tar.gz default:~/
 ```
