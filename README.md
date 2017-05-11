@@ -1,4 +1,4 @@
-# devtool(GitBucket/Jenkins/Redmine/Mattermost + Hubot)
+# devtools(GitBucket/Jenkins/Redmine/Mattermost + Hubot)
 
 ## Getting started
 
@@ -22,4 +22,54 @@ export HUBOT_JENKINS_URL=Jenkins URL # e.g. export HUBOT_JENKINS_URL=http://192.
 export HUBOT_JENKINS_AUTH=jenkins_user_id:jenkins_user_password # e.g. export HUBOT_JENKINS_AUTH=admin:admin
 
 docker-compose up -d
+```
+
+## How to backup
+```shell
+docker-compose stop
+docker container run \
+  --rm \
+  -v devtoolsdocker_mattermost-db-data:/target/mattermost-db-data \
+  -v devtoolsdocker_mattermost-app-config:/target/mattermost-app-config \
+  -v devtoolsdocker_mattermost-app-data:/target/mattermost-app-data \
+  -v devtoolsdocker_gitbucket-db-data:/target/gitbucket-db-data \
+  -v devtoolsdocker_gitbucket-app-data:/target/gitbucket-app-data \
+  -v devtoolsdocker_hubot-mattermost-data:/target/hubot-mattermost-data \
+  -v devtoolsdocker_jenkins-data:/target/jenkins-data \
+  -v devtoolsdocker_redmine-db-data:/target/redmine-db-data \
+  -v devtoolsdocker_redmine-app-data:/target/redmine-app-data \
+  -v $(pwd):/backup \
+  ubuntu tar cvzfp /backup/backup.tar.gz /target
+docker-compose start
+```
+
+If you use docker-machine, execute the above `docker container run` command in docker-machine, and copy backup.tar.gz from docker-machine to host machine with the following command.
+
+```shell
+docker-machine scp default:~/backup.tar.gz .
+```
+
+## How to restore
+```shell
+docker-compose stop
+docker container run \
+  --rm \
+  -v devtoolsdocker_mattermost-db-data:/target/mattermost-db-data \
+  -v devtoolsdocker_mattermost-app-config:/target/mattermost-app-config \
+  -v devtoolsdocker_mattermost-app-data:/target/mattermost-app-data \
+  -v devtoolsdocker_gitbucket-db-data:/target/gitbucket-db-data \
+  -v devtoolsdocker_gitbucket-app-data:/target/gitbucket-app-data \
+  -v devtoolsdocker_hubot-mattermost-data:/target/hubot-mattermost-data \
+  -v devtoolsdocker_jenkins-data:/target/jenkins-data \
+  -v devtoolsdocker_redmine-db-data:/target/redmine-db-data \
+  -v devtoolsdocker_redmine-app-data:/target/redmine-app-data \
+  -v $(pwd):/backup \
+  ubuntu bash -c "cd /target && tar xvzfp /backup/backup.tar.gz --strip 1"
+docker-compose start
+```
+
+If you use docker-machine, execute the following command to copy backup.tar.gz from host machine to docker-machine, and execute the above `docker container run` command in docker-machine.
+
+```shell
+docker-machine scp backup.tar.gz default:~/
 ```
